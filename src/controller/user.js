@@ -1,5 +1,6 @@
 const { request } = require("express")
 const e = require("express")
+const jwt = require('jsonwebtoken')
 const User = require("../models/user")
 // const {validationResult} = require("express-validator")
 const { validate } = require("../middleware/validation/user")
@@ -7,14 +8,18 @@ const { validate } = require("../middleware/validation/user")
 // const Joi = require("joi")
 // controller for each router
 
-
+const getToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+  };
 
 // create function to register/create a user
 const signup = async(req, res) => {
     // accept from postman body we can say {req.body}
     const {firstName, lastName, email, password} = req.body
     try {
-        const { error, value} = validate(req.body);
+        const { error, value} = validate("SIGNUP",req.body);
         if (error) {
             console.log(error);
             return res.send(error.details);  
@@ -38,7 +43,7 @@ const signup = async(req, res) => {
 const signin = async(req, res) => {
     const {email, password} = req.body
     try {
-        const { error, value} = validate(req.body);
+        const { error, value} = validate("SIGNIN",req.body);
         if (error) {
             console.log(error);
             return res.send(error.details);  
@@ -54,10 +59,13 @@ const signin = async(req, res) => {
                 error: "incorrect password"
             })
         }
-        res.json({
-            message: "signed in successfully",
-            user
-        })
+
+       const token = getToken(user._id);
+        res.status(200).json({
+        status: "success",
+        token,
+        user,
+        });
         
     } catch (e) {
         res.json({

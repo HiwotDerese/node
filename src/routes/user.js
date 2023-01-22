@@ -3,6 +3,11 @@ const router = express.Router()
 // const userController = require("../controller/user")
 const {getAllUsers, getUserById, signup, signin, updateUser, deleteUser} = require("../controller/user")
 
+router.route("/signin")
+.post(
+    signin
+)
+
 router.route("/")
 .get(
     // userController.getAllUsers
@@ -25,9 +30,6 @@ router.route("/:id")
     deleteUser
 )
 
-router.route("/signin")
-.post(
-    signin
-)
+
 
 module.exports = router

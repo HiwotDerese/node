@@ -37,28 +37,28 @@ exports.getAllBooks = async (req, res, next) => {
         message: errors.array()[0].msg,
       });
     }
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 10;
-    const result = await Book.paginate(
-      {
-        $or: [
-          {
-            creator: { $eq: req.user._id },
-          },
-          {
-            authors: { $eq: req.user._id },
-          },
-        ],
-      },
-      {
-        page,
-        limit,
-        sort: "-createdAt",
-      }
-    );
+    // const page = req.query.page * 1 || 1;
+    // const limit = req.query.limit * 1 || 10;
+    // const result = await Book.paginate(
+    //   {
+    //     $or: [
+    //       {
+    //         creator: { $eq: req.user._id },
+    //       },
+    //       {
+    //         authors: { $eq: req.user._id },
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     page,
+    //     limit,
+    //     sort: "-createdAt",
+    //   }
+    // );
     res.status(200).json({
       status: "success",
-      result,
+      // result,
     });
   } catch (err) {
     //TODO

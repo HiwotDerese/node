@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const userRouter = require("./src/routes/user")
 const bookRouter = require("./src/routes/book")
 
+require('dotenv').config('./.env')
 //instantiate express object called app
 const app = express();
 app.use(express.json())
